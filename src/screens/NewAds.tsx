@@ -1,6 +1,6 @@
-import { Button } from "@components/Button";
-import { Header } from "@components/Header";
-import { Input } from "@components/Input";
+import { Button } from '@components/Button'
+import { Header } from '@components/Header'
+import { Input } from '@components/Input'
 import {
   Heading,
   VStack,
@@ -8,17 +8,80 @@ import {
   Radio,
   Stack,
   HStack,
-  Box,
   Switch,
   Checkbox,
   ScrollView,
-} from "native-base";
-import { useState } from "react";
+  Pressable,
+  useToast,
+  Image,
+} from 'native-base'
+import { useState } from 'react'
+import * as ImagePicker from 'expo-image-picker'
+import * as FileSystem from 'expo-file-system'
+import { Plus } from 'phosphor-react-native'
 
 export function NewAds() {
-  const [value, setValue] = useState("one");
-  const [troca, setTroca] = useState(true);
-  const [groupValues, setGroupValues] = useState([]);
+  const [value, setValue] = useState('one')
+  const [troca, setTroca] = useState(true)
+  const [groupValues, setGroupValues] = useState([])
+  const [photoIsLoading, setPhotoIsLoading] = useState(false)
+  const [photoProduct, setPhotoProduct] = useState<
+    { name: string; uri: string; type: string }[]
+  >([])
+  const toast = useToast()
+
+  async function handleUserPhotoSelect() {
+    try {
+      setPhotoIsLoading(true)
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true,
+        allowsMultipleSelection: false,
+        selectionLimit: 3,
+      })
+
+      if (photoSelected.canceled) return
+
+      if (photoSelected.assets[0].uri) {
+        const photoInfo = await FileSystem.getInfoAsync(
+          photoSelected.assets[0].uri
+        )
+
+        if (photoInfo.size && photoInfo.size / 1024 / 1024 > 15) {
+          return toast.show({
+            title: 'Essa Imagem é muito grande. Escolha uma de ate 5MB',
+            placement: 'top',
+            bgColor: 'red.500',
+          })
+        }
+
+        const fileExtension = photoSelected.assets[0].uri.split('.').pop()
+
+        setPhotoProduct((e) => [
+          ...e,
+          {
+            name: `${new Date().getUTCMilliseconds()}`,
+            uri: photoSelected.assets[0].uri,
+            type: `${photoSelected.assets[0].type}/${fileExtension}`,
+          },
+        ])
+
+        console.log(photoProduct)
+
+        toast.show({
+          title: 'Foto atializada',
+          placement: 'bottom',
+          bgColor: 'green.500',
+        })
+      }
+    } catch (error) {
+    } finally {
+      setPhotoIsLoading(false)
+    }
+  }
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -32,6 +95,33 @@ export function NewAds() {
         <Text color="gray.300" mb={42}>
           Escolha até 3 imagens para mostrar o quando o seu produto é incrível!
         </Text>
+
+        <HStack>
+          <HStack
+            w="24"
+            h="24"
+            bgColor="gray.500"
+            borderRadius={10}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Pressable onPress={handleUserPhotoSelect}>
+              <Plus />
+            </Pressable>
+          </HStack>
+          {photoProduct.map((e) => (
+            <Image
+              key={e.name}
+              h="full"
+              resizeMode="cover"
+              alt="Product Image"
+              source={{
+                uri: e.uri,
+              }}
+            />
+          ))}
+        </HStack>
+
         <Heading color="gray2" fontSize="md" mt={68} mb={4}>
           Sobre o produto
         </Heading>
@@ -48,7 +138,7 @@ export function NewAds() {
           accessibilityLabel="favorite number"
           value={value}
           onChange={(nextValue) => {
-            setValue(nextValue);
+            setValue(nextValue)
           }}
         >
           <HStack w="full">
@@ -83,7 +173,7 @@ export function NewAds() {
         </Heading>
         <Checkbox.Group
           onChange={(values) => {
-            setGroupValues(values || []);
+            setGroupValues(values || [])
           }}
           value={groupValues}
           accessibilityLabel="choose numbers"
@@ -108,5 +198,5 @@ export function NewAds() {
         <Button w="1/2" ml={1} title="Avançar" bgColor="gray.100" />
       </HStack>
     </ScrollView>
-  );
+  )
 }

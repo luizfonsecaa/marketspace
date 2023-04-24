@@ -1,5 +1,5 @@
-import { Header } from "@components/Header";
-import { Product } from "@components/Product";
+import { Header } from '@components/Header'
+import { Product } from '@components/Product'
 import {
   HStack,
   VStack,
@@ -8,12 +8,12 @@ import {
   Select,
   CheckIcon,
   FlatList,
-} from "native-base";
-import { useState } from "react";
+} from 'native-base'
+import { useState } from 'react'
 
 export function Ads() {
-  const [service, setService] = useState("todos");
-  const [Products, setProducts] = useState([1, 2, 3, 4, 5]);
+  const [service, setService] = useState('todos')
+  const [Products, setProducts] = useState([1, 2, 3, 4, 5])
   return (
     <VStack flex={1} px={6} bgColor="gray.600">
       <Header type="basic" name="Meus Anúncios" />
@@ -45,9 +45,9 @@ export function Ads() {
         data={Products}
         keyExtractor={(item, index) => String(`${index}`)}
         numColumns={2}
-        columnWrapperStyle={{ justifyContent: "space-between" }}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
         renderItem={({ item }) => <Product />}
       ></FlatList>
     </VStack>
-  );
+  )
 }
