@@ -1,9 +1,17 @@
 import { Button } from '@components/Button'
+import { useNavigation } from '@react-navigation/native'
+import { AppNavigationRoutesProps } from '@routes/app.routes'
 import { Avatar, Heading, HStack, useTheme, VStack, Text } from 'native-base'
 import { Plus } from 'phosphor-react-native'
 
 export function Normal() {
   const { colors } = useTheme()
+  const navigation = useNavigation<AppNavigationRoutesProps>()
+
+  function handleNewAdd() {
+    navigation.navigate('newAdds', { id: 0 })
+  }
+
   return (
     <HStack mt={20} mb={8}>
       <HStack flex={3}>
@@ -27,6 +35,7 @@ export function Normal() {
       </HStack>
       <HStack flex={2}>
         <Button
+          onPress={handleNewAdd}
           title="Criar anúncio"
           colorText="white"
           variant="solid"

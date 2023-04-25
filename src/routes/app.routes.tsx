@@ -8,11 +8,15 @@ import { useTheme } from 'native-base'
 
 import { Home } from '@screens/Home'
 import { Ads } from '@screens/Ads'
+import { NewAds } from '@screens/NewAds'
+import { ProductDetails } from '@screens/ProductDetails'
 
 type AuthRoutes = {
   home: undefined
   ads: undefined
+  newAdds: { id: number }
   exit: undefined
+  productDetails: { id: number }
 }
 
 export type AppNavigationRoutesProps = BottomTabNavigationProp<AuthRoutes>
@@ -34,7 +38,7 @@ export function AppRoutes() {
         tabBarStyle: {
           backgroundColor: 'white',
           borderTopWidth: 0,
-          height: Platform.OS === 'android' ? 'auto' : 64,
+          height: Platform.OS === 'android' ? 'auto' : 70,
           paddingBottom: sizes[6],
           paddingTop: sizes[6],
         },
@@ -44,21 +48,26 @@ export function AppRoutes() {
         name="home"
         component={Home}
         options={{
-          tabBarIcon: ({ color }) => <House size={28} color={color} />,
+          tabBarIcon: ({ color }) => <House size={iconSize} color={color} />,
         }}
       />
       <Screen
         name="ads"
         component={Ads}
         options={{
-          tabBarIcon: ({ color }) => <Tag size={28} color={color} />,
+          tabBarIcon: ({ color }) => <Tag size={iconSize} color={color} />,
         }}
+      />
+      <Screen
+        name="productDetails"
+        component={ProductDetails}
+        options={{ tabBarButton: () => null }}
       />
       <Screen
         name="exit"
         component={() => null}
         options={{
-          tabBarIcon: ({ color }) => <SignOut size={28} color="red" />,
+          tabBarIcon: ({ color }) => <SignOut size={iconSize} color="red" />,
         }}
         listeners={() => ({
           tabPress: (e) => {
@@ -67,11 +76,11 @@ export function AppRoutes() {
           },
         })}
       />
-      {/* <Screen
-        name='exercise'
-        component={Exercise}
+      <Screen
+        name="newAdds"
+        component={NewAds}
         options={{ tabBarButton: () => null }}
-      /> */}
+      />
     </Navigator>
   )
 }

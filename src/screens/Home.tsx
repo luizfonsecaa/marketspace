@@ -1,26 +1,13 @@
+import { CardMyAdds } from '@components/Home/CardMyAdds'
 import { Header } from '@components/Header'
-import { Input } from '@components/Input'
+
 import { Product } from '@components/Product'
-import {
-  Text,
-  VStack,
-  Pressable,
-  HStack,
-  useTheme,
-  Heading,
-  Divider,
-  FlatList,
-} from 'native-base'
-import {
-  ArrowRight,
-  MagnifyingGlass,
-  Sliders,
-  Tag,
-} from 'phosphor-react-native'
+import { Text, VStack, FlatList } from 'native-base'
+
 import { useState } from 'react'
+import { Seach } from '@components/Home/Seach'
 
 export function Home() {
-  const { colors } = useTheme()
   const [Products, setProducts] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9])
 
   return (
@@ -34,60 +21,18 @@ export function Home() {
               Seus produtos anunciados para venda
             </Text>
 
-            <HStack
-              bgColor="lightBlue.100"
-              p={3}
-              borderRadius={8}
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <HStack alignItems="center">
-                <Tag size={24} color={colors.blue} />
-                <VStack ml={2}>
-                  <Heading fontWeight="bold" fontSize="lg">
-                    4
-                  </Heading>
-                  <Text color="gray.200">anúncios ativos</Text>
-                </VStack>
-              </HStack>
-              <HStack>
-                <Text mr={4} fontWeight="bold" color="blue">
-                  Meus anúncios
-                </Text>
-                <ArrowRight size={24} color={colors.blue} />
-              </HStack>
-            </HStack>
+            <CardMyAdds />
 
             <Text mt={8} mb={3} color="gray.300" fontSize="sm">
               Compre produtos variados
             </Text>
-
-            <Input
-              placeholder="Buscar anúncio"
-              mb={6}
-              InputRightElement={
-                <HStack>
-                  <Pressable>
-                    <MagnifyingGlass />
-                  </Pressable>
-                  <Divider
-                    orientation="vertical"
-                    mx={2}
-                    h={6}
-                    bgColor="gray.400"
-                  />
-                  <Pressable mr={2}>
-                    <Sliders />
-                  </Pressable>
-                </HStack>
-              }
-            />
+            <Seach />
           </>
         }
-        keyExtractor={(item, index) => String(`${index}`)}
+        keyExtractor={(item) => String(item)}
         numColumns={2}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
-        renderItem={({ item }) => <Product />}
+        renderItem={({ item }) => <Product key={item} />}
       ></FlatList>
     </VStack>
   )

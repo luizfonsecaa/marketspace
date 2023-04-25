@@ -1,3 +1,5 @@
+import { useNavigation } from '@react-navigation/native'
+import { AppNavigationRoutesProps } from '@routes/app.routes'
 import {
   Avatar,
   Badge,
@@ -15,8 +17,20 @@ type Props = {
 }
 
 export function Product({ isAvatar = true, disable = false }: Props) {
+  const navigation = useNavigation<AppNavigationRoutesProps>()
+
+  function handleOpenProduct() {
+    navigation.navigate('productDetails', { id: 0 })
+  }
+
   return (
-    <Pressable w="47%" mb={4} borderRadius={10} overflow="hidden">
+    <Pressable
+      w="47%"
+      mb={4}
+      borderRadius={10}
+      overflow="hidden"
+      onPress={handleOpenProduct}
+    >
       {isAvatar && (
         <Avatar
           position="absolute"
