@@ -1,27 +1,42 @@
 module.exports = function (api) {
-  api.cache(true);
+  api.cache(true)
   return {
-    presets: ['babel-preset-expo'],
     plugins: [
-      ['react-native-reanimated/plugin'],
+      'react-native-reanimated/plugin',
+      [
+        'module:react-native-dotenv',
+        {
+          allowUndefined: true,
+          blacklist: null,
+          moduleName: '@env',
+          path: '.env',
+          safe: false,
+          whitelist: null,
+        },
+      ],
       [
         'module-resolver',
         {
-          root: ['./src'],
           alias: {
-            '@dtos': './src/dtos',
+            '@api': './src/app/api',
             '@assets': './src/assets',
             '@components': './src/components',
-            '@screens': './src/screens',
-            '@storage': './src/storage',
-            '@utils': './src/utils',
-            '@services': './src/services',
-            '@hooks': './src/hooks',
             '@contexts': './src/contexts',
-            '@routes': './src/routes'
-          }
+            '@dtos': './src/dtos',
+            '@features': './src/features',
+            '@hooks': './src/hooks',
+            '@layout': './src/layout',
+            '@routes': './src/routes',
+            '@screens': './src/screens',
+            '@shared': './src/components/Shared',
+            '@storage': './src/storage',
+            '@store': './src/app/',
+            '@utils': './src/utils',
+          },
+          root: ['./src'],
         },
       ],
     ],
-  };
-};
+    presets: ['babel-preset-expo'],
+  }
+}

@@ -1,15 +1,20 @@
 import { Button } from '@components/Button'
+import { useAppDispatch, useAppSelector } from '@hooks/useStore'
 import { useNavigation } from '@react-navigation/native'
 import { AppNavigationRoutesProps } from '@routes/app.routes'
 import { Avatar, Heading, HStack, useTheme, VStack, Text } from 'native-base'
 import { Plus } from 'phosphor-react-native'
+import { API_URL } from '@env'
+import { clearProducts } from '@features/ProductsSlice'
 
 export function Normal() {
   const { colors } = useTheme()
   const navigation = useNavigation<AppNavigationRoutesProps>()
-
+  const { user } = useAppSelector((state) => state.user)
+  const dispatch = useAppDispatch()
   function handleNewAdd() {
-    navigation.navigate('newAdds', { id: 0 })
+    dispatch(clearProducts())
+    navigation.navigate('newAdds')
   }
 
   return (
@@ -22,14 +27,14 @@ export function Normal() {
           borderWidth={2}
           size={11}
           source={{
-            uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+            uri: `${API_URL}images/${user.avatar}`,
           }}
         ></Avatar>
 
         <VStack ml={3}>
           <Text fontSize="md">Boas Vindas,</Text>
           <Heading fontSize="md" fontWeight="bold">
-            Luiz!
+            {user.name}!
           </Heading>
         </VStack>
       </HStack>

@@ -3,7 +3,9 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 
 import { AuthRoutes } from './auth.routes'
 import { AppRoutes } from './app.routes'
+import { useAppSelector } from '@hooks/useStore'
 export function Routes() {
+  const { token } = useAppSelector((state) => state.user)
   const { colors } = useTheme()
   const theme = DefaultTheme
   theme.colors.background = colors.gray[700]
@@ -11,7 +13,7 @@ export function Routes() {
   return (
     <Box flex={1} bg="gray.700">
       <NavigationContainer theme={theme}>
-        {false ? <AuthRoutes /> : <AppRoutes />}
+        {token ? <AppRoutes /> : <AuthRoutes />}
       </NavigationContainer>
     </Box>
   )

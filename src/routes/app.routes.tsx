@@ -4,19 +4,23 @@ import {
   BottomTabNavigationProp,
 } from '@react-navigation/bottom-tabs'
 import { House, Tag, SignOut } from 'phosphor-react-native'
-import { useTheme } from 'native-base'
+import { Pressable, useTheme } from 'native-base'
 
 import { Home } from '@screens/Home'
 import { Ads } from '@screens/Ads'
 import { NewAds } from '@screens/NewAds'
 import { ProductDetails } from '@screens/ProductDetails'
+import { useAppDispatch } from '@hooks/useStore'
+import { logout } from '@features/UserSlice'
+import { apiSlice } from '@api/apiSlice'
 
 type AuthRoutes = {
   home: undefined
   ads: undefined
-  newAdds: { id: number }
+  newAdds: undefined
   exit: undefined
-  productDetails: { id: number }
+  preview: undefined
+  productDetails: undefined
 }
 
 export type AppNavigationRoutesProps = BottomTabNavigationProp<AuthRoutes>
@@ -25,9 +29,8 @@ const { Navigator, Screen } = createBottomTabNavigator<AuthRoutes>()
 
 export function AppRoutes() {
   const { sizes, colors } = useTheme()
-
+  const dispatch = useAppDispatch()
   const iconSize = sizes[6]
-
   return (
     <Navigator
       screenOptions={{
@@ -42,6 +45,7 @@ export function AppRoutes() {
           paddingBottom: sizes[6],
           paddingTop: sizes[6],
         },
+        unmountOnBlur: true,
       }}
     >
       <Screen
@@ -64,6 +68,11 @@ export function AppRoutes() {
         options={{ tabBarButton: () => null }}
       />
       <Screen
+        name="preview"
+        component={ProductDetails}
+        options={{ tabBarButton: () => null }}
+      />
+      <Screen
         name="exit"
         component={() => null}
         options={{
@@ -72,7 +81,8 @@ export function AppRoutes() {
         listeners={() => ({
           tabPress: (e) => {
             e.preventDefault()
-            console.log('deslogando')
+            dispatch(apiSlice.util.resetApiState())
+            dispatch(logout(undefined))
           },
         })}
       />

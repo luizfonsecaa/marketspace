@@ -1,5 +1,6 @@
 import { Header } from '@components/Header'
 import { Product } from '@components/Product'
+import { useUserProductsQuery } from '@features/ProductsApiSlice'
 import {
   HStack,
   VStack,
@@ -13,7 +14,7 @@ import { useState } from 'react'
 
 export function Ads() {
   const [service, setService] = useState('todos')
-  const [Products, setProducts] = useState([1, 2, 3, 4, 5])
+  const { data, isFetching } = useUserProductsQuery({})
   return (
     <VStack flex={1} px={6} bgColor="gray.600">
       <Header type="basic" name="Meus Anúncios" />
@@ -42,11 +43,11 @@ export function Ads() {
       </HStack>
       <FlatList
         mt={5}
-        data={Products}
-        keyExtractor={(item, index) => String(`${index}`)}
+        data={data}
+        keyExtractor={(item) => String(item.id)}
         numColumns={2}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
-        renderItem={({ item }) => <Product />}
+        renderItem={({ item }) => <Product product={item} />}
       ></FlatList>
     </VStack>
   )

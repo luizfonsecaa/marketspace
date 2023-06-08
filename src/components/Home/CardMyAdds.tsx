@@ -1,11 +1,14 @@
+import { useUserProductsQuery } from '@features/ProductsApiSlice'
 import { useNavigation } from '@react-navigation/native'
 import { AppNavigationRoutesProps } from '@routes/app.routes'
-import { HStack, Heading, VStack, Text, useTheme } from 'native-base'
+import { HStack, Heading, VStack, Text, useTheme, Spinner } from 'native-base'
 import { Tag, ArrowRight } from 'phosphor-react-native'
 import { Pressable } from 'react-native'
 export function CardMyAdds() {
+  const { data, isFetching } = useUserProductsQuery({})
   const { colors } = useTheme()
   const navigation = useNavigation<AppNavigationRoutesProps>()
+  console.log('my Products', data)
   return (
     <Pressable onPress={() => navigation.navigate('ads')}>
       <HStack
@@ -18,9 +21,13 @@ export function CardMyAdds() {
         <HStack alignItems="center">
           <Tag size={24} color={colors.blue} />
           <VStack ml={2}>
-            <Heading fontWeight="bold" fontSize="lg">
-              4
-            </Heading>
+            {isFetching ? (
+              <Spinner accessibilityLabel="Loading posts" />
+            ) : (
+              <Heading fontWeight="bold" fontSize="lg">
+                {data ? data.length : 0}
+              </Heading>
+            )}
             <Text color="gray.200">anúncios ativos</Text>
           </VStack>
         </HStack>

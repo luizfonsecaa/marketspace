@@ -1,7 +1,12 @@
 import { Divider, HStack, Pressable } from 'native-base'
 import { MagnifyingGlass, Sliders } from 'phosphor-react-native'
 import { Input } from '@components/Input'
-export function Seach() {
+
+type Props = {
+  open: () => void
+}
+
+export function Search({ open }: Props) {
   return (
     <Input
       placeholder="Buscar anúncio"
@@ -12,7 +17,7 @@ export function Seach() {
             <MagnifyingGlass />
           </Pressable>
           <Divider orientation="vertical" mx={2} h={6} bgColor="gray.400" />
-          <Pressable mr={2}>
+          <Pressable mr={2} onPress={open}>
             <Sliders />
           </Pressable>
         </HStack>

@@ -1,6 +1,9 @@
-import { Avatar, HStack, Text } from "native-base";
-
+import { useAppSelector } from '@hooks/useStore'
+import { Avatar, HStack, Text } from 'native-base'
+import { API_URL } from '@env'
 export function AvatarName() {
+  const { user } = useAppSelector((state) => state.user)
+  const { product } = useAppSelector((state) => state)
   return (
     <HStack px={5} pt={5} alignItems="center">
       <Avatar
@@ -10,10 +13,12 @@ export function AvatarName() {
         borderWidth={2}
         size={9}
         source={{
-          uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+          uri: product.user
+            ? `${API_URL}images/${product.user.avatar}`
+            : `${API_URL}images/${user.avatar}`,
         }}
       ></Avatar>
-      <Text ml={2}>Luiz Otavio</Text>
+      <Text ml={2}>{product.user ? product.user.name : user.name}</Text>
     </HStack>
-  );
+  )
 }

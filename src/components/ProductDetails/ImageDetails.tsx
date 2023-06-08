@@ -1,59 +1,53 @@
-import Carousel from "react-native-reanimated-carousel";
-import { Dimensions } from "react-native";
-import { useState } from "react";
+import Carousel from 'react-native-reanimated-carousel'
+import { Dimensions } from 'react-native'
+import { useState } from 'react'
 
-import { Divider, HStack, Image } from "native-base";
+import { Divider, HStack, Image } from 'native-base'
+import { API_URL } from '@env'
 
-export function ImageDetails() {
-  const width = Dimensions.get("window").width;
+type Props = {
+  images: { name: string; uri: string; type: string }[]
+}
 
-  const [currentImages, setCurrentImages] = useState(0);
-  const [productImages, setProductImagens] = useState([
-    {
-      url: "https://cdn.awsli.com.br/600x450/2272/2272002/produto/184216964d70d1121a5.jpg",
-      index: 1,
-    },
-    {
-      url: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQEY7wLm40beKGs-gP6gu4sD3zHkFKnna_9Ed3i2kyQSPujSNWoBWfLzA8KzMSUZkPJKyDTbsl8nIMPWzaFvIpUxkL4avpBdOVtOMD4UOk&usqp=CAE",
-      index: 2,
-    },
-  ]);
-
+export function ImageDetails({ images }: Props) {
+  const width = Dimensions.get('window').width
+  const [currentImages, setCurrentImages] = useState(0)
   return (
     <>
       <Carousel
         loop
         width={width}
         height={230}
-        data={productImages}
+        data={images}
         scrollAnimationDuration={1000}
         onSnapToItem={(index) => setCurrentImages(index)}
         pagingEnabled
         autoPlay={false}
         snapEnabled
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <Image
+            key={index}
             h="full"
             resizeMode="cover"
             alt="Product Image"
             source={{
-              uri: item.url,
+              uri: item.uri ? item.uri : `${API_URL}images/${item.path}`,
             }}
           />
         )}
       />
       <HStack ml={1} mt={-2}>
-        {productImages.map((item, index) => (
-          <HStack flex={1} mr={2}>
+        {images?.map((item, index) => (
+          <HStack key={index} flex={1} mr={2}>
             <Divider
               h={1}
               _light={{
-                bg: index == currentImages ? "gray.100" : "gray.700",
+                bg: index == currentImages ? 'gray.100' : 'gray.700',
               }}
             />
           </HStack>
         ))}
       </HStack>
     </>
-  );
+  )
 }
