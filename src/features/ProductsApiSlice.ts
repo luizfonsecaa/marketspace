@@ -1,20 +1,12 @@
 import { apiSlice } from '@api/apiSlice'
-
-import {
-  FIVE_MINUTES_QUERY_DELAY,
-  THREE_MINUTES_QUERY_DELAY,
-} from '@store/utils/constants'
 import stringifyURL from '@store/utils/stringify'
-
-import { IListResponse } from '@dtos/Common'
-import { ITrail, ITrailsQuery } from '@dtos/Trails'
 
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     products: builder.query({
-      query: () => ({
+      query: (filter) => ({
         method: 'GET',
-        url: `products/`,
+        url: `products/?${stringifyURL(filter)}`,
       }),
     }),
 

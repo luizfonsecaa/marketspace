@@ -13,6 +13,11 @@ type Product = {
   id: string
   is_preview: boolean
   user: { avatar: string; name: string; tel: string } | {}
+  filter: {
+    payment: string[]
+    acceptTrade: boolean
+    isNew: boolean
+  }
 }
 const initialState = {
   accept_trade: false,
@@ -27,6 +32,11 @@ const initialState = {
   id: '',
   user: {},
   is_preview: false,
+  filter: {
+    payment: [],
+    acceptTrade: false,
+    isNew: false,
+  },
 } as Product
 
 const productSlice = createSlice({
@@ -64,9 +74,26 @@ const productSlice = createSlice({
     updateStatusProdut: (state) => {
       state.is_active = !state.is_active
     },
+
+    setFilter: (state, action) => {
+      state.filter = action.payload
+    },
+
+    clearFilter: (state) => {
+      state.filter = {
+        payment: [],
+        acceptTrade: false,
+        isNew: false,
+      }
+    },
   },
 })
 
-export const { clearProducts, setProducts, updateStatusProdut } =
-  productSlice.actions
+export const {
+  clearProducts,
+  setProducts,
+  updateStatusProdut,
+  setFilter,
+  clearFilter,
+} = productSlice.actions
 export const productReducer = productSlice.reducer

@@ -8,7 +8,6 @@ export function CardMyAdds() {
   const { data, isFetching } = useUserProductsQuery({})
   const { colors } = useTheme()
   const navigation = useNavigation<AppNavigationRoutesProps>()
-  console.log('my Products', data)
   return (
     <Pressable onPress={() => navigation.navigate('ads')}>
       <HStack
