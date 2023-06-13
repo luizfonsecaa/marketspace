@@ -26,7 +26,7 @@ import { AppNavigationRoutesProps } from '@routes/app.routes'
 import { setProducts } from '@features/ProductsSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/useStore'
 import { useEffect } from 'react'
-
+import { paymentMethod } from '@dtos/paymentMethods'
 type FormDataProps = {
   name: string
   description: string
@@ -75,29 +75,6 @@ export function NewAds() {
     user_id,
     id,
   } = useAppSelector((state) => state.product)
-
-  const paymentMethod = [
-    {
-      value: 'deposit',
-      title: 'Depósito Bancário',
-    },
-    {
-      value: 'pix',
-      title: 'Pix',
-    },
-    {
-      value: 'cash',
-      title: 'Dinheiro',
-    },
-    {
-      value: 'boleto',
-      title: 'Boleto',
-    },
-    {
-      value: 'card',
-      title: 'Cartão de Crédito',
-    },
-  ]
 
   const {
     control,
